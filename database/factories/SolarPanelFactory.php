@@ -17,7 +17,16 @@ class SolarPanelFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'number' => $this->faker->numberBetween(1,10),
+            'light_level' => $this->faker->numberBetween(1,300),
+            'battery' => $this->faker->numberBetween(1,100),
+            'production' => $this->faker->numberBetween(1,3000),
+            'ambient_temperature' => $this->faker->numberBetween(-10,100),
+            'humidity' => $this->faker->numberBetween(1,200),
+            'panel_temperature' => $this->faker->numberBetween(-10,400),
+
+            'company_id' => $this->faker->numberBetween(1,20),
+            'user_id' => $this->faker->numberBetween(1, 20)
         ];
     }
 }

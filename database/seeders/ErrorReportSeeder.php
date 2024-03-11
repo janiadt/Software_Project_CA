@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\ErrorReport;
 
 class ErrorReportSeeder extends Seeder
 {
@@ -12,6 +13,6 @@ class ErrorReportSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        ErrorReport::factory()->count(20)->create();
     }
 }

@@ -14,6 +14,12 @@ return new class extends Migration
         Schema::create('error_reports', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->string('title');
+            $table->longText('body');
+            $table->enum('severity', ['Minimal Error','Minor Error', 'Medium Error', 'Major Error', 'Fatal Error']);
+
+            $table->foreignId('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

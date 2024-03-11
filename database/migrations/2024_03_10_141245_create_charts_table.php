@@ -14,6 +14,13 @@ return new class extends Migration
         Schema::create('charts', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->string('title');
+            $table->longText('description');
+            $table->enum('type', ['Bar', 'Pie', '100%', 'Line', 'Scatterplot']);
+
+            $table->foreignId('user_id');
+
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
