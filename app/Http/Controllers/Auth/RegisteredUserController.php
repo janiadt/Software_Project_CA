@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use App\Models\Chart;
 
 class RegisteredUserController extends Controller
 {
@@ -47,6 +48,14 @@ class RegisteredUserController extends Controller
         event(new Registered($user));
 
         Auth::login($user);
+
+        // Creating a new main pie chart to display the daily data every time a user is registered
+        $main_chart = new Chart();
+        $main_chart->title = 'System Production';
+        $main_chart->description = 'A pie chart representing the earning and spending';
+        $main_chart->type = 'pie';
+        $main_chart->user_id = Auth::user()->id;
+        $main_chart->save();
 
         return redirect(RouteServiceProvider::HOME);
     }

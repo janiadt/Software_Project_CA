@@ -16,7 +16,7 @@ return new class extends Migration
             $table->timestamps();
             $table->string('title');
             $table->longText('description');
-            $table->enum('type', ['Bar', 'Pie', '100%', 'Line', 'Scatterplot']);
+            $table->enum('type', ['bar', 'pie', 'line']);
 
             $table->foreignId('user_id');
 

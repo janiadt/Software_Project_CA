@@ -17,7 +17,7 @@ class ChartFactory extends Factory
     public function definition(): array
     {
         // Array of options
-        $types = ['Bar', 'Pie', '100%', 'Line', 'Scatterplot'];
+        $types = ['bar', 'pie', 'line'];
         return [
             'title' => $this->faker->sentence(3),
             'description' => $this->faker->sentence(100),
