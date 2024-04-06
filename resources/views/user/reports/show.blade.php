@@ -10,7 +10,7 @@
         </td>
 
         <tr>
-            <td class="text-left float-start" style="height:200px">
+            <td class="text-left" style="height:200px">
                 {{ $report->body }}
             </td>
         </tr>

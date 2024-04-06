@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreErrorReportRequest;
-use App\Http\Requests\UpdateErrorReportRequest;
+use Illuminate\Http\Request;
 use App\Models\ErrorReport;
 use Auth;
 
@@ -60,7 +59,7 @@ class ErrorReportController extends Controller
     {
         $report = ErrorReport::findOrFail($id);
         // Making sure the user is the person accessing the edit. If not, just send them an error
-        if ($report->user_id === Auth::user()->id || Auth::user()->user_type === "Developer"){
+        if ($report->user_id === Auth::id() || Auth::user()->user_type === "Developer"){
             return view('user.reports.edit', [
                 'report' => $report
             ]);
@@ -73,9 +72,29 @@ class ErrorReportController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateErrorReportRequest $request, ErrorReport $errorReport)
+    public function update(Request $request, string $id)
     {
-        //
+         // Validation rules for my reports table
+         $rules = [
+            'title' => 'required|string|min:1|max:255',
+            'body'  => 'required|string|min:3|max:10000',
+            // This line validates enum values
+            'severity'  => 'required|in:Minimal Error,Minor Error,Medium Error,Major Error,Fatal Error',
+            
+        ];
+
+        $request->validate($rules);
+        // New report intance.
+        $report = ErrorReport::findOrFail($id);
+        $report->title = $request->title;
+        $report->body = $request->body;
+        $report->severity = $request->severity;
+
+        $report->user_id = $report->user_id;
+        $report->save(); 
+        return redirect()
+            ->route('errors.show', $report->id)
+            ->with('status','Updated the Report!');
     }
 
     /**

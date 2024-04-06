@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+<div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6 bg-white my-5 pt-5 p-5">
     <h3 class="text-center">Edit report</h3>
     {{-- Routing to Reports update method, passing Report id. --}}
     <form enctype="multipart/form-data" action="{{ route('errors.update', $report->id) }}" method="post">
@@ -20,8 +21,8 @@
             @endif
         </div>
         {{-- Body value input. Here we'll need a textarea for the input --}}
-        <div class="form-group">
-            <label for="body">report Body</label>
+        <div class="form-group my-3">
+            <label for="body">Report Body</label>
             <input type="textarea" name="body" id="body" class="form-control {{ $errors->has('body') ? 'is-invalid' : '' }}" value="{{ old('body')  ? : $report->body }}" placeholder="Enter Body">
             @if($errors->has('body')) {{-- <-check if we have a validation error --}}
                 <span class="invalid-feedback">
@@ -29,8 +30,25 @@
                 </span>
             @endif
         </div>
+
+        <div class="form-group">
+            <label for="severity">Severity</label>
+            <select name="severity" class="form-control {{ $errors->has('severity') ? 'is-invalid' : '' }}" value="{{ old('severity') ? : $report->severity }}">
+                {{-- For each model category, show an option to select it --}}
+                @foreach (App\Models\ErrorReport::arr() as $a)
+                <option value = "{{$a}}">{{$a}} </option>
+                @endforeach
+            </select>
+            @if($errors->has('severity')) 
+                <span class="invalid-feedback">
+                    {{ $errors->first('severity') }} 
+                </span>
+            @endif
+            </select>
+        </div>
       
         {{-- This is a button that will let us submit the form, which will then inact the form action --}}
         <button type="submit" class="btn btn-primary">Update</button>
     </form>
+</div>
 @endsection
