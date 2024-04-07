@@ -4,6 +4,8 @@
     @auth
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6 bg-white my-5 pt-5 pb-3">
         <h2 class="text-center">Error Reports</h2>
+        <a href="{{route('errors.create')}}" class="btn btn-primary px-2">Create Error Report</a>
+
 
         {{-- Here I will display all of the error reports made by the user and their status --}}
         <table class="table table-bordered mt-3" id="normal-table" style="table-layout:auto">

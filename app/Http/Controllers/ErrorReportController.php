@@ -29,15 +29,34 @@ class ErrorReportController extends Controller
      */
     public function create()
     {
-        //
+        return view('user.reports.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreErrorReportRequest $request)
+    public function store(Request $request)
     {
-        //
+        $rules = [
+            'title' => 'required|string|min:1|max:255',
+            'body'  => 'required|string|min:3|max:10000',
+            // This line validates enum values
+            'severity'  => 'required|in:Minimal Error,Minor Error,Medium Error,Major Error,Fatal Error',
+            
+        ];
+
+        $request->validate($rules);
+        // New report intance.
+        $report = new ErrorReport;
+        $report->title = $request->title;
+        $report->body = $request->body;
+        $report->severity = $request->severity;
+
+        $report->user_id = Auth::id();
+        $report->save(); 
+        return redirect()
+            ->route('errors.show', $report->id)
+            ->with('status','Created the Report!');
     }
 
     /**
@@ -100,8 +119,18 @@ class ErrorReportController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ErrorReport $errorReport)
+    public function destroy(string $id)
     {
-        //
+        $report = ErrorReport::findOrFail($id);
+        // Delete if the user made the report of it they're a developer
+        if ($report->user_id === Auth::user()->id || Auth::user()->user_type === "Developer"){
+            $report->delete();
+            // Redirecting to the index and giving our flash message + status
+            return redirect()
+                ->route('errors.index')
+                ->with('status', 'Deleted the report!');
+        } else {
+            abort(401);
+        }
     }
 }
