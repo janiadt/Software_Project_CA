@@ -2,55 +2,52 @@
 @section('content')
 
     @auth
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6 bg-white my-5 pt-5 pb-3">
+    <div class="drop-shadow-3xl max-w-3xl mx-3 mx-lg-auto sm:px-6 lg:px-8 space-y-6 bg-gray-100 mt-5 p-2  rounded">
         <h2 class="text-center">Solar Panel Array</h2>
+    </div>
+    <div class="drop-shadow-3xl max-w-3xl mx-3 mx-lg-auto sm:px-6 lg:px-8 space-y-6 bg-gray-200 mt-1 p-5 pt-3 pb-3 rounded">
+        
+        {{-- routing to the panels.registerPanel route when the button is clicked. --}}
         <a href="{{route('panels.registerPanel')}}" class="btn btn-primary px-2">Register Solar Panel</a>
 
 
-        {{-- Here I will display all of the error reports made by the user and their status --}}
-        <table class="table table-bordered mt-3" id="normal-table" style="table-layout:auto">
-            <thead class="table-primary">
-            <tr>
-                <th scope="col" class="p-2">Number</th>
-                <th scope="col" class="p-2">Registered By</th>
-                <th scope="col" class="p-2">Registered At</th>
-                <th scope="col" class="p-2">Light Level</th>
-                <th scope="col" class="p-2">Battery</th>
-                <th scope="col" class="p-2">Production</th>
-                <th scope="col" class="p-2">Ambient Temperature</th>
-                <th scope="col" class="p-2">Humidity</th>
-                <th scope="col" class="p-2">Panel Temperature</th>
-                <th scope="col" class="p-2">Company Name</th>
-            </tr>
+        {{-- Using the blade forelse loop, I will display each panel as its own div with a background based on how much battery is left --}}
+        <div class="d-flex align-items-start flex-row flex-wrap ml-5">
             @forelse($panels as $panel)
-            </thead>
-            <tbody>
-                <tr>
-                {{-- Link to show page --}}
-                <td class="p-3"><a href="{{route('panels.show',$panel->id)}}" id="counter" class="link-underline link-underline-opacity-0 link-underline-opacity-100-hover text-black">Solar Panel Number: {{$panel->number}}</a></td>
-                {{-- User name --}}
-                <td class="p-3">{{$panel->users->name}}
-                <td class="p-3">{{$panel->created_at->diffForHumans()}} 
-                <td class="p-3">{{$panel->light_level}}
-                <td class="p-3">{{$panel->battery}}
-                <td class="p-3">{{$panel->production}}
-                <td class="p-3">{{$panel->ambient_temperature}}
-                <td class="p-3">{{$panel->humidity}}
-                <td class="p-3">{{$panel->panel_temperature}}
-                <td class="p-3">{{$panel->companies->name}}
-                </tr>
-            </tbody>
+            <div class="drop-shadow-3xl 
+            
+            {{-- Blade if statement in the class names. The color will change based on how much battery you have left --}}
+            @if($panel->battery > 70)
+            bg-metal
+            @elseif($panel->battery > 40)
+            bg-orange-400
+            @elseif($panel->battery < 39 && $panel->battery > 1)
+            bg-red-400
+            @else
+            bg-black text-white
+            @endif w-10 h-10 mx-2 my-2 border border-dark" style="width:48px; height:70px">
+            {{-- Showing panel number and battery --}}
+            <p>#{{$panel->number}}</p>
+            
+            {{$panel->battery}}%      
+            </div>   
             @empty
             <h4 class="text-center">No Solar Panels Registered</h4>
             @endforelse
-        </table>
-
-        {{-- Most viewed threads --}}
-
-        {{-- Pagination links --}}
-        <div class="d-flex justify-content-center">
-            {{ $panels->links() }}
         </div>
+        
+
+        <div class="border border-dark">
+        {{-- Using the in_array method, I check if the number 0 apperas in the $panels array (I need to use the toArray method to make the laravel collections into an array) --}}
+        <h4 class="text-center">Malfunctioning solar panel(s):
+            {{-- Shows the panels that are malfunctioning --}}
+        @foreach($panels as $panel)
+        @if($panel->battery === 0)
+        <short class="text-red-800">#{{$panel->number}}</short>
+        @endif
+        @endforeach
+      
+    </div>
     </div>
     @endauth
 

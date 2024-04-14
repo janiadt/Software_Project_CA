@@ -12,13 +12,14 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
         <!-- Scripts -->
-        
+
+        <script src="https://cdn.jsdelivr.net/npm/p5@1.9.2/lib/p5.js"></script>
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         @vite(['resources/sass/app.scss', 'resources/js/app.js'])
         @laravelPWA
     </head>
     <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">
+        <div class="min-h-screen bg-white">
             @include('layouts.navigation')
 
             <!-- Page Heading -->

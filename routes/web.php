@@ -21,14 +21,22 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// Dashboard route that links to the dashboardcontroller controller's index method. Using the auth and verified middleware.
+
 Route::get('dashboard', [DashboardController::class, 'index'])
 ->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::resource('errors', ErrorReportController::class);
+// My errors resource route (resource routes generate all the necessary routes for CRUD. This leads to my ErrorReportController controller)
 
-Route::resource('panels', SolarPanelController::class);
+Route::resource('errors', ErrorReportController::class)->middleware(['auth', 'verified']);
 
-Route::get('/registerpanel', [SolarPanelController::class, 'registerPanel'])->name('panels.registerPanel');
+// My panelsresource route (resource routes generate all the necessary routes for CRUD. This leads to my SolarPanelController controller)
+
+Route::resource('panels', SolarPanelController::class)->middleware(['auth', 'verified']);
+
+// The registerPanel get route will clal the SolarPanelController's registerPanel method. 
+
+Route::get('/registerpanel', [SolarPanelController::class, 'registerPanel'])->middleware(['auth', 'verified'])->name('panels.registerPanel');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

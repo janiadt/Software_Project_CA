@@ -17,7 +17,7 @@ class SolarPanelController extends Controller
         $user = Auth::user();
 
         // Getting all of the registered users' solar panels
-        $panels = SolarPanel::where('user_id', $user->id)->paginate(8);
+        $panels = SolarPanel::all()->where('user_id', $user->id);
 
 
         return view("user.panels.index", ["panels" => $panels]);
@@ -33,7 +33,7 @@ class SolarPanelController extends Controller
 
     public function registerPanel()
     {
-        // We find the panel id through the find or fail function
+        // Making a new solar panel and randomizing all values
         $solarpanel = new SolarPanel;
         $solarpanel->number = rand(2,10);
         $solarpanel->light_level = rand(30,300);
@@ -46,9 +46,6 @@ class SolarPanelController extends Controller
         $solarpanel->user_id = Auth::id();
         $solarpanel->save();
 
-
-        
-        
         return redirect()
             ->route('panels.index') 
             ->with('status','A new solar panel has been registered!'); 
