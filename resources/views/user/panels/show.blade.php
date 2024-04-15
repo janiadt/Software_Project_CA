@@ -1,37 +1,77 @@
 @extends('layouts.app')
-{{-- Thread details. WIll change the look of this page in future commits. --}}
+{{-- Showing a specific panel --}}
 @section('content')
-<div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6 bg-white my-5 pt-5 p-5">
-    <h3 class="text-center">{{$report->title}}</h3>
-    {{-- Displaying the data of the thread table --}}
+@auth
+<div class="max-w-3xl mx-3 mx-lg-auto sm:px-6 lg:px-8 space-y-6 bg-gray-200 mt-4 p-2 rounded">
+    <h3 class="text-center">Panel Number #{{$panel->number}}</h3>
+    {{-- Displaying all of the values of the panel object --}}
     <table class="table table-primary table-striped">
-        <td class="text-left py-4">
-            {{ $report->severity }}
-        </td>
-
         <tr>
-            <td class="text-left" style="height:200px">
-                {{ $report->body }}
+            <td class="text-center">
+                <h5>Light-level</h5>
+                {{ $panel->light_level }}
+                
+            </td>
+        </tr>
+        <tr>
+            <td class="text-center">
+                <h5>Battery</h5>
+                {{ $panel->battery }}%
+            </td>
+        </tr>
+        <tr>
+            <td class="text-center">
+                <h5>Production</h5>
+                {{ $panel->production }}
+                
+            </td>
+        </tr>
+        <tr>
+            <td class="text-center">
+                <h5>Ambient Temperature</h5>
+                {{ $panel->ambient_temperature }} 
+                
+            </td>
+        </tr>
+        <tr>
+            <td class="text-center">
+                <h5>Humidity</h5>
+                {{ $panel->humidity }}
+                
+            </td>
+        </tr>
+        <tr>
+            <td class="text-center">
+                <h5>Panel Temperature</h5>
+                {{ $panel->panel_temperature }}
+                
+            </td>
+        </tr>
+        <tr>
+            <td class="text-center">
+                <h5>Company Name</h5>
+                {{ $panel->companies->name }}
+                
+            </td>
+        </tr>
+        <tr>
+            <td class="text-center">
+                <h5>Registered By</h5>
+                {{ $panel->users->name }}
+                
             </td>
         </tr>
         
-        <tr>
-            <td class="text-left d-flex">
-                <h5>Submitted By:</h5>
-                {{ $report->users->name }} 
-            </td>
-        </tr>    
     </table>
-    @if ($report->user_id === Illuminate\Support\Facades\Auth::user()->id || Auth::user()->user_type("Developer"))
-    <a href="{{route('errors.edit', $report->id) }}" class="btn btn-primary float-left">Edit</a>
-    <a href="#" class="btn btn-danger float-right" data-bs-toggle="modal" data-bs-target="#delete2-modal">Delete</a>
+    <br>
+    <a href="#" class="btn btn-danger float-right" data-bs-toggle="modal" data-bs-target="#delete-modal">Delete</a>
     <div class="clearfix"></div>
-    {{-- Delete pop-up --}}
-    <div class="modal fade" id="delete2-modal">
+    {{-- Delete item modal. The popup window will ask you if you want to delete the item. --}}
+    <div class="modal fade" id="delete-modal">
         <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Delete Error Report</h5>
+                <h5 class="modal-title">Delete Song</h5>
                 <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -41,20 +81,18 @@
             </div>
             <div class="modal-footer">
                 {{-- We find the form with querySelector, then submit the form with submit() --}}
-                <button type="button" class="btn btn-danger" onclick="document.querySelector('#delete-form2').submit()">Proceed</button>
+                <button type="button" class="btn btn-danger" onclick="document.querySelector('#delete-form').submit()">Proceed</button>
                 <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cancel</button>
             </div>
         </div>
         </div>
     </div>
-    {{-- Routing to the thread destroy method. Passing error report id --}}
-    <form method="POST" id="delete-form2" action="{{route('errors.destroy',$report->id)}}">
+    {{-- Routing to panels.destroy with the panel id --}}
+    <form method="POST" id="delete-form" action="{{route('panels.destroy',$panel->id)}}">
         @csrf
         {{-- passing the value of DELETE since forms can only do post and get --}}
         @method('DELETE')
     </form>
-    @endif
 </div>
-    
-    
+@endauth
 @endsection

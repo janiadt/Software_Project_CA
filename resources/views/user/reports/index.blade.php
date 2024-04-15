@@ -2,7 +2,7 @@
 @section('content')
 
     @auth
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6 bg-white my-5 pt-5 pb-3">
+    <div class="max-w-3xl mx-3 mx-lg-auto sm:px-6 lg:px-8 space-y-6 bg-white mt-4 p-2 rounded">
         <h2 class="text-center">Error Reports</h2>
         <a href="{{route('errors.create')}}" class="btn btn-primary px-2">Create Error Report</a>
 
@@ -32,8 +32,6 @@
             <h4 class="text-center">No Reports Yet</h4>
             @endforelse
         </table>
-
-        {{-- Most viewed threads --}}
 
         {{-- Pagination links --}}
         <div class="d-flex justify-content-center">

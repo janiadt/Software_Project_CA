@@ -37,7 +37,7 @@ class SolarPanelController extends Controller
         $solarpanel = new SolarPanel;
         $solarpanel->number = rand(2,10);
         $solarpanel->light_level = rand(30,300);
-        $solarpanel->battery = rand(2,100);
+        $solarpanel->battery = rand(0,100);
         $solarpanel->production = rand(1000,3000);
         $solarpanel->ambient_temperature = rand(-10,40);
         $solarpanel->humidity = rand(2,200);
@@ -56,42 +56,31 @@ class SolarPanelController extends Controller
      */
     public function store(Request $request)
     {
-        $rules = [
-            'title' => 'required|string|min:1|max:255',
-            'body'  => 'required|string|min:3|max:10000',
-            // This line validates enum values
-            'severity'  => 'required|in:Minimal Error,Minor Error,Medium Error,Major Error,Fatal Error'
-            
-        ];
-
-        // I want to create the panel when a button is pressed
-
-        $request->validate($rules);
-        // New report intance.
-        $report = new ErrorReport;
-        $report->title = $request->title;
-        $report->body = $request->body;
-        $report->severity = $request->severity;
-
-        $report->user_id = Auth::id();
-        $report->save(); 
-        return redirect()
-            ->route('errors.show', $report->id)
-            ->with('status','Created the Report!');
+        
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(SolarPanel $solarPanel)
+    public function show(string $id)
     {
-        //
+        $panel = SolarPanel::findOrFail($id);
+        // Using the findorfail method to find the specific solar panel
+        if ($panel->user_id === Auth::id() || Auth::user()->user_type === "Developer"){
+            return view('user.panels.show', [
+            'panel' => $panel
+            ]);
+        } else {
+            abort(401);
+        }
+        
+        
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(SolarPanel $solarPanel)
+    public function edit(string $id)
     {
         //
     }
@@ -99,7 +88,7 @@ class SolarPanelController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateSolarPanelRequest $request, SolarPanel $solarPanel)
+    public function update(Request $request, string $id)
     {
         //
     }
@@ -107,8 +96,18 @@ class SolarPanelController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(SolarPanel $solarPanel)
+    public function destroy(string $id)
     {
-        //
+        $panel = SolarPanel::findOrFail($id);
+        // Delete if the user made the report of it they're a developer
+        if ($panel->user_id === Auth::user()->id || Auth::user()->user_type === "Developer"){
+            $panel->delete();
+            // Redirecting to the index and giving our flash message + status
+            return redirect()
+                ->route('panels.index')
+                ->with('status', 'Deleted the solar panel!');
+        } else {
+            abort(401);
+        }
     }
 }

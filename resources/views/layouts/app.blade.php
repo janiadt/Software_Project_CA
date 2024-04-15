@@ -19,6 +19,16 @@
         @laravelPWA
     </head>
     <body class="font-sans antialiased">
+        @if(session('status')) 
+    {{-- If we passed a status key to this page, we will create the following div --}}                        
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{session('status')}} {{-- Here we display the currect status message in the session --}}
+        <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
+            {{-- Close button --}}
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    @endif
         <div class="min-h-screen bg-white">
             @include('layouts.navigation')
 
@@ -38,4 +48,5 @@
         </div>
         @yield('javascript');
     </body>
+    
 </html>

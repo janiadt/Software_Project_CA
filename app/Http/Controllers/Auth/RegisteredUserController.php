@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 use App\Models\Chart;
+use Storage;
 
 class RegisteredUserController extends Controller
 {
@@ -45,6 +46,10 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        // Getting a blank json and putting the user id as the name
+        $data = Storage::disk('local')->get('template.json');
+        Storage::disk('local')->put($user->id.'.json', $data);
+
         event(new Registered($user));
 
         Auth::login($user);
@@ -56,6 +61,7 @@ class RegisteredUserController extends Controller
         $main_chart->type = 'pie';
         $main_chart->user_id = Auth::user()->id;
         $main_chart->save();
+
 
         return redirect(RouteServiceProvider::HOME);
     }

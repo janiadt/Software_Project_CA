@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Chart;
+use Storage;
 use LaravelDaily\LaravelCharts\Classes\LaravelChart;
 use Auth;
 
@@ -20,6 +21,11 @@ class DashboardController extends Controller
         // Making a chart variable
         $chart1 = Chart::where('user_id', Auth::id())->first();
 
+        // Getting the user's json file from storage (each user has their json file for that hour/week)
+        $json = Storage::disk('local')->get($user->id.'.json');
+        $json = json_decode($json, true);
+
+
         // Making an array of chart options
         $main_chart_options = [
         'chart_title' => $chart1->title,
@@ -33,8 +39,8 @@ class DashboardController extends Controller
     
         // Creating a laravel chart object
         $main_chart = new LaravelChart($main_chart_options);
-        
-        return view("user/dashboard", compact("main_chart"));
+        // returning the data to the main dashboard
+        return view("user/dashboard")->with('data', $json);
     }
 
     /**
