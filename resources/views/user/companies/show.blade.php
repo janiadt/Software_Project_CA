@@ -1,31 +1,31 @@
 @extends('layouts.app')
-{{-- Thread details.--}}
+{{-- Company details--}}
 @section('content')
 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6 bg-white my-5 pt-5 p-5">
-    <h3 class="text-center">{{$report->title}}</h3>
-    {{-- Displaying the data of the thread table --}}
+    <h3 class="text-center">{{$company->title}}</h3>
+    {{-- Displaying the data of the company table --}}
     <table class="table table-primary table-striped">
         <td class="text-left py-4">
-            <h5>Report Severity:</h5>
-            {{ $report->severity }}
+            <h5>Company Name:</h5>
+            {{ $company->name }}
         </td>
 
         <tr>
-            <td class="text-left" style="height:200px">
-                <h5>Report Body:</h5>
-                {{ $report->body }}
+            <td class="text-left" style="">
+                <h5>Created At:</h5>
+                {{ $company->created_at }}
             </td>
         </tr>
-        
+
         <tr>
-            <td class="text-left d-flex">
-                <h5>Submitted By:</h5>
-                {{ $report->users->name }} 
+            <td class="text-left" style="">
+                <h5>Company Address:</h5>
+                {{ $company->address }}
             </td>
-        </tr>    
+        </tr>
+
     </table>
-    @if ($report->user_id === Illuminate\Support\Facades\Auth::user()->id || Auth::user()->user_type === "Developer")
-    <a href="{{route('errors.edit', $report->id) }}" class="btn btn-primary float-left">Edit</a>
+    <a href="{{route('companies.edit', $company->id) }}" class="btn btn-primary float-left">Edit</a>
     <a href="#" class="btn btn-danger float-right" data-bs-toggle="modal" data-bs-target="#delete2-modal">Delete</a>
     <div class="clearfix"></div>
     {{-- Delete pop-up --}}
@@ -49,13 +49,12 @@
         </div>
         </div>
     </div>
-    {{-- Routing to the thread destroy method. Passing error report id --}}
-    <form method="POST" id="delete-form2" action="{{route('errors.destroy',$report->id)}}">
+    {{-- Routing to the company destroy method. Passing error report id --}}
+    <form method="POST" id="delete-form2" action="{{route('companies.destroy',$company->id)}}">
         @csrf
         {{-- passing the value of DELETE since forms can only do post and get --}}
         @method('DELETE')
     </form>
-    @endif
 </div>
     
     

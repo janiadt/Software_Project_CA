@@ -17,11 +17,11 @@
             <a href="{{route('panels.show', $panel->id)}}" class="drop-shadow-3xl text-decoration-none text-black
             
             {{-- Blade if statement in the class names. The color will change based on how much battery you have left --}}
-            @if($panel->battery > 70)
+            @if($panel->battery >= 70)
             bg-metal
             @elseif($panel->battery >= 40)
             bg-orange-400
-            @elseif($panel->battery < 39 && $panel->battery >= 1)
+            @elseif($panel->battery <= 39 && $panel->battery >= 1)
             bg-red-400
             @else
             bg-black text-white

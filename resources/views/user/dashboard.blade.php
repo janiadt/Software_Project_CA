@@ -33,8 +33,23 @@
                     </div>
                 </div>
             </div>
-            
         </div>
+
+    {{-- If the user is a free user, display the subscribe message --}}
+
+    @if (Auth::user()->user_type === "Free User" || !Auth::user()->user_type === "Subscriber" && Auth::user()->user_type !== "Developer")
+    <div class="max-w-2xl mx-auto">
+        <div class="text-center drop-shadow-3xl max-w-3xl mx-3 mx-lg-auto sm:px-6 lg:px-8 space-y-6 bg-gray-100 p-5 mt-5  rounded">
+            <h4>Subscribe now and become a paying user!</h4>
+            <p>Remove advertisements and gain access to more detailed data breakdowns! </p>
+            <div class="text-gray-900 text-center">
+                <form method="GET" action="{{ route('profile.subscribe') }}">
+                <x-primary-button>Subscribe</x-primary-button>
+                </form>
+            </div>
+        </div>
+    </div>
+    @endif
        
     @endsection
 

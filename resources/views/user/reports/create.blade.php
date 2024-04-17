@@ -1,4 +1,4 @@
-{{-- Need to change the extends to "myapp", since breeze added its own app layout --}}
+
 @extends('layouts.app')
 
 @section('content')

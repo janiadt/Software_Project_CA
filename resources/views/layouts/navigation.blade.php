@@ -19,7 +19,7 @@
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
-                            <div>{{ Auth::user()->name }}</div>
+                            <div> Account </div>
 
                             <div class="ms-1">
                                 <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -61,7 +61,10 @@
     </div>
 
     <!-- Responsive Navigation Menu -->
-    <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
+    
+    <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden" 
+    {{-- If the user is a guest, make these unclickable and add a blur --}}
+    @guest style="pointer-events: none; filter: blur(3px); background: rgb(28, 44, 136)" @endguest> 
         <div class="pt-2 pb-3 space-y-1 d-flex align-items-start flex-column">
             <a href="{{route('dashboard')}}"  class="drop-shadow-3xl w-100 no-underline text-center text-2xl align-self-center font-semibold text-gray-100 hover:text-purple hover:bg-white focus:outline-none focus:bg-gray-100 focus:text-purple transition duration-150 ease-in-out py-3">
                 {{ __('Dashboard') }}
@@ -83,6 +86,13 @@
                     {{ __('Log Out') }}
                 </a>
             </form>
+            @auth
+            @if (Auth::user()->user_type === "Developer")
+            <a href="{{route('companies.index')}}"  class="drop-shadow-3xl w-100 no-underline text-center text-2xl align-self-center font-semibold text-gray-100 hover:text-purple hover:bg-white focus:outline-none focus:bg-gray-100 focus:text-purple transition duration-150 ease-in-out py-3">
+                {{ __('Register Company') }}
+            </a>
+            @endif
+            @endauth
         </div>
     </div>
 </nav>

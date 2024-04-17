@@ -57,4 +57,17 @@ class ProfileController extends Controller
 
         return Redirect::to('/');
     }
+
+    public function subscribe(){
+        $user = Auth::user();
+        // If the user exists OR the user isn't a subscriber or developer
+        if ($user !== null && $user->user_type !== "Paid User" && $user->user_type !== "Developer"){
+            // Changing the user's role to paid user
+            $user->user_type = "Paid User";
+            $user->save();
+        }
+        // Go to dashboard with status
+        return redirect()
+            ->route('dashboard')->with('status', 'You have subscribed!');
+    }
 }

@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ErrorReportController;
 use App\Http\Controllers\SolarPanelController;
+use App\Http\Controllers\CompanyController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('root');
 });
 
 // Dashboard route that links to the dashboardcontroller controller's index method. Using the auth and verified middleware.
@@ -34,14 +35,21 @@ Route::resource('errors', ErrorReportController::class)->middleware(['auth', 've
 
 Route::resource('panels', SolarPanelController::class)->middleware(['auth', 'verified']);
 
+// Companies resource route
+
+Route::resource('companies', CompanyController::class)->middleware(['auth', 'verified']);
+
 // The registerPanel get route will clal the SolarPanelController's registerPanel method. 
 
 Route::get('/registerpanel', [SolarPanelController::class, 'registerPanel'])->middleware(['auth', 'verified'])->name('panels.registerPanel');
 
+
+// Laravel breeze auth routes
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/subscribe', [ProfileController::class, 'subscribe'])->name('profile.subscribe');
 });
 
 require __DIR__.'/auth.php';

@@ -18,7 +18,7 @@ class ErrorReportController extends Controller
 
 
         // Getting all of the users' error reports by user
-        $reports = ErrorReport::where('user_id', $user->id)->paginate(8);
+        $reports = ErrorReport::orderBy('created_at', 'desc')->paginate(8);
 
 
         return view("user.reports.index", ["reports" => $reports]);
