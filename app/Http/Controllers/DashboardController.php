@@ -24,21 +24,7 @@ class DashboardController extends Controller
         // Getting the user's json file from storage (each user has their json file for that hour/week)
         $json = Storage::disk('local')->get($user->id.'.json');
         $json = json_decode($json, true);
-
-
-        // Making an array of chart options
-        $main_chart_options = [
-        'chart_title' => $chart1->title,
-        'report_type' => 'group_by_string',
-        'model' => 'App\Models\SolarPanel',
-        'group_by_field' => 'production',
-        'filter_field' => 'created_at',
-        'group_by_period' => 'day',
-        'chart_type' => 'pie',
-        ];
-    
-        // Creating a laravel chart object
-        $main_chart = new LaravelChart($main_chart_options);
+        
         // returning the data to the main dashboard
         return view("user/dashboard")->with('data', $json);
     }

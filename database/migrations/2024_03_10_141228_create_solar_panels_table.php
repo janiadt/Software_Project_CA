@@ -25,8 +25,8 @@ return new class extends Migration
             $table->foreignId('company_id');
             $table->foreignId('user_id');
             // Making the FK constraints
-            $table->foreign('company_id')->references('id')->on('companies');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('company_id')->references('id')->on('companies')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

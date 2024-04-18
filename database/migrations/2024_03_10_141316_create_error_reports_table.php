@@ -19,7 +19,7 @@ return new class extends Migration
             $table->enum('severity', ['Minimal Error','Minor Error', 'Medium Error', 'Major Error', 'Fatal Error']);
 
             $table->foreignId('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
