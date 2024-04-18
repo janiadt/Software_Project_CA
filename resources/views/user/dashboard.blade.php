@@ -12,6 +12,14 @@
 
     @section('content')
 
+    <label for="days" class="pt-4 mx-2">Choose a day:</label>
+
+    <select name="days" id="day">
+    @foreach(array_keys($data) as $d)
+    <option value={{$d}} >{{$d + 1}}</option>
+    @endforeach
+    </select>
+
     {{-- This is where we're rendering my daily usage pie chart --}}
         <div>
             <div class="max-w-2xl mx-auto">
@@ -56,13 +64,12 @@
     @endsection
 
     @section('javascript')
-        <script>
-
+        <script>       
             // Using p5js in instance mode, so I can call multiple canvases
-
-
-            let day = 0;
+            let daySelect = document.getElementById("day");
             
+            console.log(daySelect);
+
             var sketch1 = function(p) {
                 p.setup = function() {
                     const firstCanvas = p.createCanvas(400, 250);
@@ -75,13 +82,11 @@
                 }
 
                 p.draw = function() {
-                    p.noLoop();
+                    p.background(255);
                     p.push();
                    
-                    let selfcData = data[day].SelfConsumption;
-                    let syscData = data[day].SystemProduction;
-
-                    
+                    let selfcData = data[daySelect.value].SelfConsumption;
+                    let syscData = data[daySelect.value].SystemProduction;
 
                     // Drawing the arcs
 
@@ -152,9 +157,9 @@
                 }
 
                 p.draw = function() {
-                    p.noLoop();
+                    p.background(255);
                     p.push();
-                    let exportData = data[day].Export;
+                    let exportData = data[daySelect.value].Export;
 
                     let averageExport = 5;
                     let fixedData = p.map(exportData, 0, averageExport, 0, p.width);
