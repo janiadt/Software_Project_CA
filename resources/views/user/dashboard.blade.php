@@ -15,9 +15,10 @@
     <label for="days" class="pt-4 mx-2">Choose a day:</label>
 
     <select name="days" id="day">
-    @foreach(array_keys($data) as $d)
-    <option value={{$d}} >{{$d + 1}}</option>
-    @endforeach
+
+        @foreach(array_keys($data) as $d)
+        <option value={{$d}} >{{$d + 1}}</option>
+        @endforeach
     </select>
 
     {{-- This is where we're rendering my daily usage pie chart --}}
