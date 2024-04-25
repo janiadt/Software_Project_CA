@@ -19,7 +19,7 @@
             <tbody>
                 <tr>
                 {{-- Link to show page --}}
-                <td class="p-2"><a href="{{route('errors.show',$company->id)}}" id="counter" class="link-underline link-underline-opacity-0 link-underline-opacity-100-hover text-black">{{$company->name}}</a></td>
+                <td class="p-2"><a href="{{route('companies.show',$company->id)}}" id="counter" class="link-underline link-underline-opacity-0 link-underline-opacity-100-hover text-black">{{$company->name}}</a></td>
                 <td class="p-2">{{$company->address}}
                 <td class="p-2">{{$company->created_at}}
                 </tr>
